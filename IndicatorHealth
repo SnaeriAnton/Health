@@ -1,0 +1,25 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class IndicatorHealth : MonoBehaviour
+{
+    [SerializeField] private Slider _slider;
+
+    private int _maxValue = 100;
+    private int _minValue = 0;
+
+    public float SliderValue => _slider.value;
+
+    private void Start()
+    {
+        _slider.maxValue = _maxValue;
+        _slider.minValue = _minValue;
+    }
+
+    public void UpdateHealth(float healtValue)
+    {
+        _slider.value = healtValue;
+    }
+}
