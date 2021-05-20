@@ -1,0 +1,33 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class PlayerHealth : MonoBehaviour
+{    
+    [SerializeField] private IndicatorHealth _indicatorHealth;
+
+    private float _speed = 0.1f;
+    private float _target;
+    private int _valueHealth = 10;
+
+    private void Update()
+    {
+        ChangeHealth();
+    }
+
+    public void Treat()
+    {
+        _target = _indicatorHealth.SliderValue + _valueHealth;
+    }
+    public void Damage()
+    {
+        _target = _indicatorHealth.SliderValue - _valueHealth;
+    }
+
+    private void ChangeHealth()
+    {
+        var value = Mathf.MoveTowards(_indicatorHealth.SliderValue, _target, _speed);
+        _indicatorHealth.UpdateHealth(value);
+    }
+}
