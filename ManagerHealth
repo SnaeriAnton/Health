@@ -1,0 +1,13 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class ManagerHealth : MonoBehaviour
+{
+    [SerializeField] private IndicatorHealth _indicatorHealth;
+
+    public void TransfetValueHealth(int value)
+    {
+        _indicatorHealth.ChangeHealth(value);
+    }
+}
