@@ -4,30 +4,20 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class PlayerHealth : MonoBehaviour
-{    
-    [SerializeField] private IndicatorHealth _indicatorHealth;
+{
+    [SerializeField] private ManagerHealth _managerHealth;
 
-    private float _speed = 0.1f;
-    private float _target;
     private int _valueHealth = 10;
-
-    private void Update()
-    {
-        ChangeHealth();
-    }
+    private int _target;
 
     public void Treat()
     {
-        _target = _indicatorHealth.SliderValue + _valueHealth;
+        _target = _valueHealth;
+        _managerHealth.TransfetValueHealth(_target);
     }
     public void Damage()
     {
-        _target = _indicatorHealth.SliderValue - _valueHealth;
-    }
-
-    private void ChangeHealth()
-    {
-        var value = Mathf.MoveTowards(_indicatorHealth.SliderValue, _target, _speed);
-        _indicatorHealth.UpdateHealth(value);
+        _target = - _valueHealth;
+        _managerHealth.TransfetValueHealth(_target);
     }
 }
