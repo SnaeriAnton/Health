@@ -1,23 +1,31 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.Events;
 
 public class PlayerHealth : MonoBehaviour
 {
-    [SerializeField] private ManagerHealth _managerHealth;
+    [SerializeField] private UnityEvent _treatedHealth = new UnityEvent();
+    [SerializeField] private UnityEvent _damagedHealth = new UnityEvent();
 
-    private int _valueHealth = 10;
-    private int _target;
+    public event UnityAction TreatedHealth
+    {
+        add => _treatedHealth.AddListener(value);
+        remove => _treatedHealth.RemoveListener(value);
+    }
+
+    public event UnityAction DamagedHealth
+    {
+        add => _damagedHealth.AddListener(value);
+        remove => _damagedHealth.RemoveListener(value);
+    }
 
     public void Treat()
     {
-        _target = _valueHealth;
-        _managerHealth.TransfetValueHealth(_target);
+        _treatedHealth?.Invoke();
     }
     public void Damage()
     {
-        _target = - _valueHealth;
-        _managerHealth.TransfetValueHealth(_target);
+        _damagedHealth?.Invoke();
     }
 }
