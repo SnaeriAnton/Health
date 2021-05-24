@@ -2,31 +2,49 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Events;
 
 public class IndicatorHealth : MonoBehaviour
 {
     [SerializeField] private Slider _slider;
+    [SerializeField] private PlayerHealth _playerHealth;
 
     private int _maxValue = 100;
     private int _minValue = 0;
     private float _speed = 0.1f;
     private float _target;
 
-    public float SliderValue => _slider.value;
-
     private void Start()
     {
         _slider.maxValue = _maxValue;
         _slider.minValue = _minValue;
+        _playerHealth.TreatedHealth += IncreaseHealth;
+        _playerHealth.DamagedHealth += DecreaseHealth;
     }
 
-    private void Update()
+    public void IncreaseHealth()
     {
-        _slider.value = Mathf.MoveTowards(_slider.value, _target, _speed);
+        _target = _slider.value + 10;
+        StartCoroutine(ChangeHealth(_target));
     }
 
-    public void ChangeHealth(int healtValue)
+    public void DecreaseHealth()
     {
-        _target = _slider.value + healtValue;
+        _target = _slider.value - 10;
+        StartCoroutine(ChangeHealth(_target));
+    }
+
+    private IEnumerator ChangeHealth(float target)
+    {
+        while (_slider.value != target)
+        {
+            yield return _slider.value = Mathf.MoveTowards(_slider.value, target, _speed);
+        }
+    }
+
+    private void OnDisable()
+    {
+        _playerHealth.TreatedHealth -= IncreaseHealth;
+        _playerHealth.DamagedHealth -= DecreaseHealth;
     }
 }
