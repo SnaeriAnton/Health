@@ -18,19 +18,23 @@ public class IndicatorHealth : MonoBehaviour
     {
         _slider.maxValue = _maxValue;
         _slider.minValue = _minValue;
-        _playerHealth.TreatedHealth += IncreaseHealth;
-        _playerHealth.DamagedHealth += DecreaseHealth;
     }
 
-    public void IncreaseHealth()
+    private void OnEnable()
     {
-        _target = _slider.value + 10;
-        StartCoroutine(ChangeHealth(_target));
+        _playerHealth.TreatedHealth += ChangeTarget;
     }
 
-    public void DecreaseHealth()
+    public void ChangeTarget(bool target)
     {
-        _target = _slider.value - 10;
+        if (target)
+        {
+            _target = _slider.value + 10;
+        } 
+        else
+        {
+            _target = _slider.value - 10;
+        }
         StartCoroutine(ChangeHealth(_target));
     }
 
@@ -38,13 +42,13 @@ public class IndicatorHealth : MonoBehaviour
     {
         while (_slider.value != target)
         {
-            yield return _slider.value = Mathf.MoveTowards(_slider.value, target, _speed);
+            _slider.value = Mathf.MoveTowards(_slider.value, target, _speed);
+            yield return null;
         }
     }
 
     private void OnDisable()
     {
-        _playerHealth.TreatedHealth -= IncreaseHealth;
-        _playerHealth.DamagedHealth -= DecreaseHealth;
+        _playerHealth.TreatedHealth -= ChangeTarget;
     }
 }
