@@ -5,27 +5,17 @@ using UnityEngine.Events;
 
 public class PlayerHealth : MonoBehaviour
 {
-    [SerializeField] private UnityEvent _treatedHealth = new UnityEvent();
-    [SerializeField] private UnityEvent _damagedHealth = new UnityEvent();
-
-    public event UnityAction TreatedHealth
-    {
-        add => _treatedHealth.AddListener(value);
-        remove => _treatedHealth.RemoveListener(value);
-    }
-
-    public event UnityAction DamagedHealth
-    {
-        add => _damagedHealth.AddListener(value);
-        remove => _damagedHealth.RemoveListener(value);
-    }
+    public UnityAction<bool> TreatedHealth;
 
     public void Treat()
     {
-        _treatedHealth?.Invoke();
+        bool increaseHealth = true;
+        TreatedHealth?.Invoke(increaseHealth);
     }
+
     public void Damage()
     {
-        _damagedHealth?.Invoke();
+        bool decreaseHealth = false;
+        TreatedHealth?.Invoke(decreaseHealth);
     }
 }
